@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import DepartmentsPage from './pages/DepartmentsPage';
 import ActivitiesPage from './pages/ActivitiesPage';
+import ActivityAdminPage from './pages/ActivityAdminPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/departments" element={<DepartmentsPage />} />
         <Route path="/activities" element={<ActivitiesPage />} />
+        <Route path="/admin/activities" element={<ActivityAdminPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />
