@@ -1,36 +1,9 @@
 import { useMemo, useState } from 'react';
-
-const activityCategories = ['全部活动', '文化活动', '学术讲座', '体育竞赛', '节日庆典'];
-
-const activities = [
-  {
-    title: '2024秋季迎新晚会',
-    date: '2024年9月',
-    category: '节日庆典',
-    imageText: '迎新晚会',
-    description:
-      '活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览。'
-  },
-  {
-    title: '中国日',
-    date: '2024年9月',
-    category: '文化活动',
-    imageText: '中国日',
-    description:
-      '活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览。'
-  },
-  {
-    title: '学术分享会',
-    date: '2024年10月',
-    category: '学术讲座',
-    imageText: '学术分享',
-    description:
-      '活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览活动概览。'
-  }
-];
+import { activityCategories, formatActivityDate, loadPublishedActivities } from '../data/activities';
 
 function ActivitiesPage() {
   const [activeCategory, setActiveCategory] = useState('全部活动');
+  const activities = useMemo(() => loadPublishedActivities(), []);
 
   const filteredActivities = useMemo(() => {
     if (activeCategory === '全部活动') {
@@ -71,11 +44,24 @@ function ActivitiesPage() {
         <div className="activities-grid">
           {filteredActivities.map((activity) => (
             <article className="activity-card" key={`${activity.title}-${activity.date}`}>
-              <div className="activity-image">{activity.imageText}</div>
+              {activity.coverMode === 'image' && activity.coverImage ? (
+                <img src={activity.coverImage} alt={activity.title} className="activity-image activity-image-media" />
+              ) : (
+                <div className="activity-image">{activity.imageText}</div>
+              )}
               <div className="activity-content">
                 <h3>{activity.title}</h3>
-                <p className="activity-date">{activity.date}</p>
+                <p className="activity-date">{activity.date ? formatActivityDate(activity.date) : ''}</p>
                 <p>{activity.description}</p>
+                <p style={{ marginTop: '0.75rem' }}>
+                  <strong>地点：</strong>
+                  {activity.location || '未填写'}
+                </p>
+                {activity.detailLink && activity.detailLink !== '#' && (
+                  <a href={activity.detailLink} target="_blank" rel="noreferrer" style={{ display: 'inline-block', marginTop: '1rem', color: '#003875', fontWeight: 600 }}>
+                    查看详细信息
+                  </a>
+                )}
               </div>
             </article>
           ))}
